@@ -45,7 +45,7 @@ public class SeccionesRepository {
     }
 
     public void add(Seccion seccion) {
-        list.add(seccion);
+        InventoryDatabase.databaseWriteExecutor.submit(() -> sectionDao.insert(seccion));
     }
 
     public void Edit(Seccion seccion) {

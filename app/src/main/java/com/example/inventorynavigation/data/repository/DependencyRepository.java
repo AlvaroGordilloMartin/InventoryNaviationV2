@@ -45,7 +45,7 @@ public class DependencyRepository {
     }
 
     public void add(Dependency dependency) {
-        list.add(dependency);
+        InventoryDatabase.databaseWriteExecutor.submit(() -> dependencyDao.insert(dependency));
     }
 
     public void Edit(Dependency dependency) {
