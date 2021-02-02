@@ -1,84 +1,78 @@
-package com.example.inventorynavigation.iu.secciones;
+package com.example.inventorynavigation.iu.dependency;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDeepLinkBuilder;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
-import com.example.inventorynavigation.R;
-import com.example.inventorynavigation.data.dao.SectionDao;
-import com.example.inventorynavigation.data.model.Dependency;
-import com.example.inventorynavigation.data.model.Seccion;
-import com.example.inventorynavigation.data.repository.DependencyRepository;
-import com.example.inventorynavigation.data.repository.SeccionesRepository;
-import com.example.inventorynavigation.iu.InventoryApplication;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
-import java.util.List;
+import com.example.inventorynavigation.R;
+import com.example.inventorynavigation.data.model.Dependency;
+import com.example.inventorynavigation.data.repository.DependencyRepository;
+import com.example.inventorynavigation.iu.InventoryApplication;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.Random;
 
-public class EditSeccionesFragment extends Fragment {
 
+public class AddDependencyFragment extends Fragment {
 
-
-    Spinner spinner;
-    EditText editText;
-    Button button;
-    List<Dependency> list;
     DependencyRepository repository = new DependencyRepository();
-    SeccionesRepository seccionesRepository = new SeccionesRepository();
+
+    TextInputEditText name,shortname,description,image;
+    TextInputLayout tlname,tlshortname,tldescription,tlimage;
+    Button button;
 
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_edit_secciones, container, false);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_add_dependency2, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        button = view.findViewById(R.id.btGuardarAdd);
+        name = view.findViewById(R.id.tieNameAdd);
+        tlname = view.findViewById(R.id.tilNameAdd);
+        shortname = view.findViewById(R.id.tieShortNameAdd);
+        tlshortname = view.findViewById(R.id.tilShortNameAdd);
+        description = view.findViewById(R.id.tieDescriptionAdd);
+        tldescription = view.findViewById(R.id.tilDescriptionAdd);
+        image = view.findViewById(R.id.tieIrlImageAdd);
+        tlimage = view.findViewById(R.id.tilIrlImageAdd);
 
-        spinner = view.findViewById(R.id.sp_secciones);
-        editText = view.findViewById(R.id.edtSecciones);
-        button = view.findViewById(R.id.btAddSecciones);
-        list = repository.get();
-
-
-
-        ArrayAdapter<Dependency> adapter = new ArrayAdapter<Dependency>(getContext(),  android.R.layout.simple_spinner_dropdown_item, list);
-        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        button.setOnClickListener(v -> validateAdd());
+        button.setOnClickListener(v -> Guardar(v));
     }
 
-    private void validateAdd() {
-        if(editText.toString().isEmpty())
-            editText.setError("No puede estar vacio");
-        else{
-            seccionesRepository.add(new Seccion(editText.getText().toString(),((Dependency)spinner.getSelectedItem()).getShortname()));
-            showUpNotification();
-            NavHostFragment.findNavController(this).navigate(R.id.action_editSeccionesFragment_to_listSeccionesFragment);
-        }
-
+    private void Guardar(View v) {
+        Dependency dependency = new Dependency(name.getText().toString(),shortname.getText().toString(),description.getText().toString(),image.getText().toString());
+        repository.add(dependency);
+        showUpNotification(dependency);
+        Navigation.findNavController(v).navigateUp();
     }
 
-    private void showUpNotification(){
+
+
+    /**
+     * Crea una notificacion cuando se crea una nueva dependencia
+     */
+    private void showUpNotification(Dependency dependency){
         //Una PendingIntent tiene un objeto Intent en si interior que define lo que se quiere ejecutar cuando se pulse sobre la notificacion
         //Iniciar una activity
 //        Intent intent = new Intent(getActivity(), SplashActivity.class);
@@ -95,15 +89,15 @@ public class EditSeccionesFragment extends Fragment {
 
         PendingIntent pendingIntent = new NavDeepLinkBuilder(getActivity())
                 .setGraph(R.navigation.nav_graph)
-                .setDestination(R.id.editSeccionesFragment)
+                .setDestination(R.id.editDependencyFragment)
                 //.setArguments(bundle)
                 .createPendingIntent();
 
         Notification.Builder builder = new Notification.Builder(getActivity(), InventoryApplication.CHANNEL_ID)
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(getResources().getString(R.string.notification_title_seccion))
-                .setContentText(getResources().getString(R.string.text_add_seccion))
+                .setContentTitle(getResources().getString(R.string.notification_title_dependency))
+                .setContentText(getResources().getString(R.string.text_add_dependency))
                 .setContentIntent(pendingIntent);
 
         //Se añade la notificacion al gestor de notificaciones
@@ -115,5 +109,4 @@ public class EditSeccionesFragment extends Fragment {
     private void showListFragment(){
         NavHostFragment.findNavController(this).navigateUp();
     }
-
 }

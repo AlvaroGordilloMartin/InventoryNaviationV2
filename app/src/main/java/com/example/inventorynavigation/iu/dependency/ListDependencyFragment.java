@@ -18,10 +18,13 @@ import android.widget.LinearLayout;
 
 import com.example.inventorynavigation.R;
 import com.example.inventorynavigation.data.model.Dependency;
+import com.example.inventorynavigation.data.repository.DependencyRepository;
 import com.example.inventorynavigation.iu.adapter.DependencyAdapter;
 import com.example.inventorynavigation.iu.base.BaseDialogFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +35,14 @@ public class ListDependencyFragment extends Fragment implements ListDependencyCo
     private RecyclerView rvDependency;
     private DependencyAdapter adapter;
     private List<Dependency> list;
+    DependencyRepository repository = new DependencyRepository();
     private ListDependencyContract.Presenter presenter;
     private DependencyAdapter.OnDepedencyClickListener listener;
     private Bundle bundle;
     private NavController navController;
     private Dependency deleted;
+    FloatingActionButton button;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,14 @@ public class ListDependencyFragment extends Fragment implements ListDependencyCo
         llLoading = view.findViewById(R.id.llLoading);
         llNoData = view.findViewById(R.id.llNoData);
         rvDependency = view.findViewById(R.id.rvDependency);
+        button = view.findViewById(R.id.fab);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(view).navigate(R.id.action_listDependencyFragment_to_addDependencyFragment);
+            }
+        });
 
         navController = Navigation.findNavController(view);
         listener = new DependencyAdapter.OnDepedencyClickListener() {
@@ -77,6 +91,9 @@ public class ListDependencyFragment extends Fragment implements ListDependencyCo
                 return true;
             }
         };
+
+        list = repository.get();
+
         //1. Crear el adapter
         adapter = new DependencyAdapter(list, listener);
 
@@ -103,6 +120,7 @@ public class ListDependencyFragment extends Fragment implements ListDependencyCo
     public void onDeleteDependency(View v) {
         Dependency dependency = adapter.getItem(rvDependency.getChildAdapterPosition(v));
         Bundle bundle = new Bundle();
+        bundle.putSerializable("dependencia",dependency);
         bundle.putString(BaseDialogFragment.TITLE, getString(R.string.title_delete_dependency));
         bundle.putString(BaseDialogFragment.MESSAGE
                 , String.format(getString(R.string.message_delete_dependency), dependency.getShortname()));
@@ -119,7 +137,8 @@ public class ListDependencyFragment extends Fragment implements ListDependencyCo
         if(getArguments() !=null)
             if(getArguments().getBoolean(BaseDialogFragment.CONFIRM_DELETE)){
                 //deleted = (Dependency) getArguments().getSerializable();
-                presenter.delete(deleted);
+                repository.delete(deleted);
+                showSnackBarDeleted();
             }
     }
 

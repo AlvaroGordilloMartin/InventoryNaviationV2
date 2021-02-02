@@ -53,6 +53,6 @@ public class SeccionesRepository {
     }
 
     public void delete(Seccion seccion) {
-        list.remove(seccion);
+        InventoryDatabase.databaseWriteExecutor.submit(() -> sectionDao.delete(seccion));
     }
 }

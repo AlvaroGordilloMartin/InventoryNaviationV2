@@ -12,12 +12,19 @@ import androidx.fragment.app.DialogFragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.inventorynavigation.R;
+import com.example.inventorynavigation.data.model.Dependency;
+import com.example.inventorynavigation.data.model.Seccion;
+import com.example.inventorynavigation.data.repository.DependencyRepository;
+import com.example.inventorynavigation.data.repository.SeccionesRepository;
 
 public class BaseDialogFragment extends DialogFragment {
     public static final String TITLE = "title";
     public static final String MESSAGE = "message";
     public static final String CONFIRM_DELETE = "confirm delete";
     public static final String DELETED = "deleted";
+
+    DependencyRepository repository = new DependencyRepository();
+    SeccionesRepository seccionesRepository = new SeccionesRepository();
 
 /*
 No funciona con el componenete navigation si se puede usar con el fragment manager
@@ -41,10 +48,9 @@ No funciona con el componenete navigation si se puede usar con el fragment manag
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //ESTO ESTA FEISIMO
-                        Bundle bundle = new Bundle();
-                        bundle.putBoolean(CONFIRM_DELETE, true);
+                        seccionesRepository.delete((Seccion)getArguments().getSerializable("seccion"));
                         NavHostFragment.findNavController(BaseDialogFragment.this)
-                                .navigate(R.id.listSeccionesFragment, bundle);
+                                .navigate(R.id.listSeccionesFragment);
 
 
                         //NO FUNCIONA CON NAVIGATION COMPONENT, da error porque getTargetFragment es null
@@ -66,10 +72,9 @@ No funciona con el componenete navigation si se puede usar con el fragment manag
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //ESTO ESTA FEISIMO
-                        Bundle bundle = new Bundle();
-                        bundle.putBoolean(CONFIRM_DELETE, true);
+                        repository.delete((Dependency) getArguments().getSerializable("dependencia"));
                         NavHostFragment.findNavController(BaseDialogFragment.this)
-                                .navigate(R.id.listDependencyFragment, bundle);
+                                .navigate(R.id.listDependencyFragment);
 
 
                         //NO FUNCIONA CON NAVIGATION COMPONENT, da error porque getTargetFragment es null

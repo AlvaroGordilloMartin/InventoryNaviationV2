@@ -46,4 +46,9 @@
     <string name="txtSeccionNombre">Nombre:</string>
     <string name="txtSeccionDependencia">Dependencia</string>
     <string name="btnAddSecciones">Añadir</string>
+    <string name="channel_name">Canal de notificaciones de Inventory</string>
+    <string name="notification_title_dependency">Alta dependencia</string>
+    <string name="text_add_dependency">Se ha creado una nueva dependencia</string>
+    <string name="notification_title_seccion">Alta seccion</string>
+    <string name="text_add_seccion">Se ha creado una nueva seccion</string>
 </resources>

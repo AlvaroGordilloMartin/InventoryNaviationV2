@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_listDependencyFragment_to_baseDialogFragment"
             app:destination="@id/baseDialogFragment" />
+        <action
+            android:id="@+id/action_listDependencyFragment_to_addDependencyFragment"
+            app:destination="@id/addDependencyFragment" />
     </fragment>
     <fragment
         android:id="@+id/editDependencyFragment"
@@ -71,4 +74,9 @@
             android:id="@+id/action_editSeccionesFragment_to_listSeccionesFragment"
             app:destination="@id/listSeccionesFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addDependencyFragment"
+        android:name="com.example.inventorynavigation.iu.dependency.AddDependencyFragment"
+        android:label="fragment_add_dependency2"
+        tools:layout="@layout/fragment_add_dependency2" />
 </navigation>

@@ -1,5 +1,10 @@
 package com.example.inventorynavigation.iu.dependency;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +14,26 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDeepLinkBuilder;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.inventorynavigation.R;
 import com.example.inventorynavigation.data.model.Dependency;
+import com.example.inventorynavigation.iu.InventoryActivity;
+import com.example.inventorynavigation.iu.InventoryApplication;
+import com.example.inventorynavigation.iu.SplashActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.List;
+import java.util.Random;
 
 public class EditDependencyFragment extends Fragment implements EditDependencyContract.View{
 
     private EditDependencyContract.Presenter presenter;
+
+    //Para trabajar con una dependencia que el usuario ha introducido usar metodo getDependency o guardar en variable
 
     private TextInputLayout tilName;
     private TextInputLayout tilShortName;
@@ -49,6 +63,7 @@ public class EditDependencyFragment extends Fragment implements EditDependencyCo
         super.onViewCreated(view, savedInstanceState);
         presenter = new EditDependencyPresenter(this);
 
+
         tilName = view.findViewById(R.id.tilName);
         tilDescription = view.findViewById(R.id.tilDescription);
         tilShortName = view.findViewById(R.id.tilShortName);
@@ -68,6 +83,7 @@ public class EditDependencyFragment extends Fragment implements EditDependencyCo
 
         if (dependency!=null)
             haveDepemdencyToEdit(dependency);
+
         btGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +97,8 @@ public class EditDependencyFragment extends Fragment implements EditDependencyCo
                     presenter.furtherDependency(save);
                 else
                     presenter.editDepedency(save);
+
+                Navigation.findNavController(v).navigateUp();
             }
         });
     }
@@ -102,6 +120,8 @@ public class EditDependencyFragment extends Fragment implements EditDependencyCo
 
     }
 
+    //Aqui deberia de haber algo de añadir cosas que viene
+
     @Override
     public void onSuccess(List<Dependency> list) {
 
@@ -113,4 +133,6 @@ public class EditDependencyFragment extends Fragment implements EditDependencyCo
         tieShortName.setText(edit.getShortname());
         tilShortName.setEnabled(false);
     }
+
+
 }

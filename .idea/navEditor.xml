@@ -13,8 +13,20 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="577" />
-                            <option name="y" value="23" />
+                            <option name="x" value="856" />
+                            <option name="y" value="-71" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="addDependencyFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="584" />
+                            <option name="y" value="-298" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -37,8 +49,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="571" />
-                            <option name="y" value="-304" />
+                            <option name="x" value="728" />
+                            <option name="y" value="240" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -52,6 +64,15 @@
                             <option name="x" value="501" />
                             <option name="y" value="-895" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_editSeccionesFragment_to_listSeccionesFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -67,6 +88,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_listDependencyFragment_to_addDependencyFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_listDependencyFragment_to_baseDialogFragment">
                               <value>
                                 <LayoutPositions />

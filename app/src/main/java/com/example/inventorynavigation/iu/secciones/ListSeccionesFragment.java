@@ -100,6 +100,7 @@ public class ListSeccionesFragment extends Fragment implements ListSeccionesCont
     private void onDeleteSeccion(View v) {
         Seccion seccion = adapter.getItem(rvSecciones.getChildAdapterPosition(v));
         Bundle bundle = new Bundle();
+        bundle.putSerializable("seccion",seccion);
         bundle.putString(BaseDialogFragment.TITLE, getString(R.string.title_delete_seccion));
         bundle.putString(BaseDialogFragment.MESSAGE
                 , String.format(getString(R.string.message_delete_seccion), seccion.getEstanteria()));
@@ -116,11 +117,9 @@ public class ListSeccionesFragment extends Fragment implements ListSeccionesCont
 
         if (getArguments() != null) {
             if (getArguments().getBoolean(BaseDialogFragment.CONFIRM_DELETE)) {
-                //deleted = (Dependency) getArguments().getSerializable();
-                presenter.delete(deleted);
-            }
-            if (getArguments().getBoolean("ConfirmAdd")) {
-                list.add((Seccion) getArguments().getSerializable("estanteria"));
+                deleted = (Seccion) getArguments().getSerializable("");
+                repository.delete(deleted);
+                showSnackBarDeleted();
             }
         }
 

@@ -50,9 +50,10 @@ public class DependencyRepository {
 
     public void Edit(Dependency dependency) {
        list.get(list.lastIndexOf(dependency)).Edit(dependency);
+       InventoryDatabase.databaseWriteExecutor.submit(() -> dependencyDao.update(dependency));
     }
 
     public void delete(Dependency deleted) {
-        list.remove(deleted);
+        InventoryDatabase.databaseWriteExecutor.submit(() -> dependencyDao.delete(deleted));
     }
 }
